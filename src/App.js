@@ -1,50 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import './components/BarChart'
 
-const BASE_URL = "http://192.168.1.10:5000"
+import BarChart from './components/BarChart';
+import Api from './api/Api'
+import objectToArray from './Util'
+
+const BASE_URL = "http://localhost:8080"
 
 class App extends Component {
 
   constructor(props) {
     super(props);
-
+    this.api = new Api()
     this.state = {
-      capturesByDish : null
+      waste_by_menu_item : null
     }
   }
 
   componentDidMount() {
-    fetch(BASE_URL + "/captures-by-dish")
-      .then(resp => resp.json())
-      .then(capturesByDish => {
-        console.log(capturesByDish)
-        this.setState({ capturesByDish })
-      })
+    this.api.getWasteByMenuItem()
+      .then(resp =>  {
+        const asArray = objectToArray(resp, ["Menu Item", "Waste (KG)"])
+        this.setState({wasteByMenuItem: asArray}
+      )})
   }
 
   render() {
-    const { capturesByDish } = this.state;
+    const { wasteByMenuItem } = this.state;
     return (
       <div className="App">      
-        { capturesByDish != null && this.renderCapturesByDish(capturesByDish)}
+        <BarChart data={this.state.wasteByMenuItem}/>
       </div>
     );
-  }
-
-  renderCapturesByDish(capturesByDish) {
-    return Object.keys(capturesByDish).map((dishName, index) => this.renderCapturesForDish(capturesByDish, dishName))
-  }
-
-  renderCapturesForDish(capturesByDish, dishName) {
-    return (
-      <div key={dishName}>
-        <h3>{dishName}</h3>
-          {capturesByDish[dishName].map((capture, index) => {
-            return <img style={{padding: 10}} key={capture.id} src={capture['image_url']} width="300" height="300"/>
-          })}
-      </div>
-    )
   }
 }
 
