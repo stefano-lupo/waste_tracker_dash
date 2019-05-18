@@ -1,8 +1,9 @@
-
-
-function objectToArray(object, withHeaders = []) {
+const objectToArray = (object) => {
     const data = []
-    data.push(withHeaders)
+    if (!object) {
+        return data
+    }
+
     Object.keys(object).forEach(k => {
         data.push([k, object[k]])
     })

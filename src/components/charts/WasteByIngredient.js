@@ -1,34 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import  { Chart } from 'react-google-charts'
 
 const options = {
-    title: "Overall Food Waste Per Menu Item (kg)",
-    hAxis: { title: "Menu Item" },
+    title: "Food Waste By Ingredient (kg)",
+    hAxis: { title: "Ingredient" },
     vAxis: { title: "Mass" },
     legend: "none"
 };
-const data = [
-    ,
-];
 
-export default class BarChart extends React.Component {
+const dataset = data => {
+    let withHeaders = [["Ingredient", "Waste (KG)"]]
+    console.log(data)
+    data.forEach(d => withHeaders.push(d));
+    return withHeaders
+}
+
+export default class WasteByIngredient extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props)
     }
 
     render() {
+        console.log(this.props)
         const { data } = this.props;
         if (!data) {
             return null;
         }
 
-        console.log("Had data")
-        console.log(data)
-
         return <Chart
             chartType="BarChart"
-            data={this.props.data}
+            data={dataset(data)}
             options={options}
             width="80%"
             height="400px"

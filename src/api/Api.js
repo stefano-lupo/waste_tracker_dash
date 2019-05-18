@@ -10,7 +10,24 @@ export default class Api {
     }
 
     getWasteByMenuItem() {
-        return fetch(this.withBase("/waste/menu_item"))
-            .then(resp => resp.json())
+        return this.get("/waste/menu_item");
+    }
+
+    getWasteOverTime() {
+        return this.get("/waste/per_hour");
+    }
+
+    getWasteByIngredient() {
+        return this.get("/waste/ingredient");
+    }
+
+    get(endpoint) {
+        return fetch(this.withBase(endpoint))
+        .then(r => {
+            console.log("Got repsonse")
+            console.log(r)
+            if (!r.ok) { throw r }
+            return r.json()
+        });
     }
 }

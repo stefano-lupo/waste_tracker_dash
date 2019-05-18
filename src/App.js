@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import './components/BarChart'
 
-import BarChart from './components/BarChart';
 import Api from './api/Api'
 import objectToArray from './Util'
+// import LineChart from './components/LineChart';
+import WasteOverTime from './components/charts/WasteOverTime'
+import WasteByIngredient from './components/charts/WasteByIngredient';
+import WasteByMenuItem from './components/charts/WasteByMenuItem';
 
-const BASE_URL = "http://localhost:8080"
 
 class App extends Component {
 
@@ -14,23 +15,39 @@ class App extends Component {
     super(props);
     this.api = new Api()
     this.state = {
-      waste_by_menu_item : null
+      wasteByMenuItem : null,
+      wasteByIngredient: null,
+      wasteOverTime: null
     }
   }
 
   componentDidMount() {
-    this.api.getWasteByMenuItem()
-      .then(resp =>  {
-        const asArray = objectToArray(resp, ["Menu Item", "Waste (KG)"])
-        this.setState({wasteByMenuItem: asArray}
-      )})
+    // this.api.getWasteByMenuItem()
+    //   .then(json => {
+    //     const wasteByMenuItem = objectToArray(json);
+    //     this.setState({ wasteByMenuItem });
+    // });
+    
+    // this.api.getWasteByIngredient()
+    //   .then(json => {
+    //     const wasteByIngredient = objectToArray(json);
+    //     this.setState({ wasteByIngredient });
+    // });
+        
+    this.api.getWasteOverTime()
+      .then(json => {
+        const wasteOverTime = objectToArray(json)
+        this.setState({ wasteOverTime })
+    });
   }
 
   render() {
-    const { wasteByMenuItem } = this.state;
+    // const { wasteByIngredient, wasteOverTime } = this.state;
     return (
       <div className="App">      
-        <BarChart data={this.state.wasteByMenuItem}/>
+        <WasteByMenuItem data={this.state.wasteByMenuItem} />
+        <WasteByIngredient data={this.state.wasteByIngredient} />
+        <WasteOverTime data={this.state.wasteOverTime} />
       </div>
     );
   }
