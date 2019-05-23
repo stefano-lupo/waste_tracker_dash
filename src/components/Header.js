@@ -11,18 +11,18 @@ export default class Header extends React.Component {
 
     render() {
         return (
-            <div class="row" style={{width: "50%"}}>
-                <div class="col-sm-1">
+            <div class="row">
+                <div class="col-sm-2">
                     <img src={TcdLogo} class="img-fluid" />
                 </div>
-                <div class="col-sm-1">
-                    <img src={UnimoreLogo} class="img-fluid"/>
-                </div>
-                <div class="col-sm-4">
+                {/* <div class="col-sm-3">
                     <img src={FloWasteLogo} class="img-fluid"/>
-                </div>
+                </div> */}
                 <div class="col-sm-2">
                     <img src={FoodCloudLogo} class="img-fluid" />
+                </div>
+                <div class="col-sm-2">
+                    <img src={UnimoreLogo} class="img-fluid"/>
                 </div>
             </div>
         )

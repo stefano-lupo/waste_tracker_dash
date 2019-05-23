@@ -22,11 +22,11 @@ export default class Api {
     }
 
     getRecentImages() {
-        return this.get("/images/recent")
+        return this.get("/images/recent");
     }
 
-    getImageUrl(filename) {
-        return this.withBase("/static/images/" + filename)
+    getDetectionUrl(id) {
+        return this.withBase("/image/detections/" + id)
     }
 
     get(endpoint) {

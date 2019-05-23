@@ -50,23 +50,18 @@ render() {
     //       return (<img src='https://i.kinja-img.com/gawker-media/image/upload/s--UYWnBrHt--/c_scale,f_auto,fl_progressive,q_80,w_800/wmpvownqus8xwvylswsr.jpg' class="img-fluid"/>)
     //   })}
     //   </div>
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-      <div class="col-xs-8 col-xs-offset-2">
-      <Carousel
-        activeIndex={index}
-        direction={direction}
-        onSelect={this.handleSelect}>
-       {
+        <div class="col-xs-12 col-xs-offset-2">
+      < Carousel
+         activeIndex={index}
+         direction={direction}
+         onSelect={this.handleSelect}>
+        {  
         this.state.recentImages.map(e => {
           return (
             <Carousel.Item>
-            <img src={this.api.getImageUrl(e.path)} className="d-block w-100"  alt="First slide"/>
-            {/* <img src="https://i.kinja-img.com/gawker-media/image/upload/s--UYWnBrHt--/c_scale,f_auto,fl_progressive,q_80,w_800/wmpvownqus8xwvylswsr.jpg" /> */}
-            <Carousel.Caption>
-              <h3>First slide label</h3>
-              <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            </Carousel.Caption>
+            <img src={this.api.getDetectionUrl(e.id)} className="d-block w-100"  alt="First slide"/>
           </Carousel.Item>
           );
         })
