@@ -3,7 +3,9 @@ import './App.css';
 
 import Api from './api/Api'
 import objectToArray from './Util'
-// import LineChart from './components/LineChart';
+
+import Header from './components/Header'
+import RecentImages from './components/RecentImages'
 import WasteOverTime from './components/charts/WasteOverTime'
 import WasteByIngredient from './components/charts/WasteByIngredient';
 import WasteByMenuItem from './components/charts/WasteByMenuItem';
@@ -44,7 +46,9 @@ class App extends Component {
   render() {
     // const { wasteByIngredient, wasteOverTime } = this.state;
     return (
-      <div className="App">      
+      <div className="App" class="container-fluid">
+        <Header/>
+        <RecentImages/>      
         <WasteByMenuItem data={this.state.wasteByMenuItem} />
         <WasteByIngredient data={this.state.wasteByIngredient} />
         <WasteOverTime data={this.state.wasteOverTime} />
