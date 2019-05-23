@@ -21,7 +21,6 @@ export default class WasteByIngredient extends React.Component {
     }
 
     render() {
-        console.log(this.props)
         const { data } = this.props;
         if (!data) {
             return null;

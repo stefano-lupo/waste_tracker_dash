@@ -36,11 +36,11 @@ class App extends Component {
     //     this.setState({ wasteByIngredient });
     // });
         
-    this.api.getWasteOverTime()
-      .then(json => {
-        const wasteOverTime = objectToArray(json)
-        this.setState({ wasteOverTime })
-    });
+    // this.api.getWasteOverTime()
+    //   .then(json => {
+    //     const wasteOverTime = objectToArray(json)
+    //     this.setState({ wasteOverTime })
+    // });
   }
 
   render() {
@@ -49,9 +49,9 @@ class App extends Component {
       <div className="App" class="container-fluid">
         <Header/>
         <RecentImages/>      
-        <WasteByMenuItem data={this.state.wasteByMenuItem} />
+        {/* <WasteByMenuItem data={this.state.wasteByMenuItem} />
         <WasteByIngredient data={this.state.wasteByIngredient} />
-        <WasteOverTime data={this.state.wasteOverTime} />
+        <WasteOverTime data={this.state.wasteOverTime} /> */}
       </div>
     );
   }

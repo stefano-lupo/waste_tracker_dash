@@ -21,6 +21,14 @@ export default class Api {
         return this.get("/waste/ingredient");
     }
 
+    getRecentImages() {
+        return this.get("/images/recent")
+    }
+
+    getImageUrl(filename) {
+        return this.withBase("/static/images/" + filename)
+    }
+
     get(endpoint) {
         return fetch(this.withBase(endpoint))
         .then(r => {
