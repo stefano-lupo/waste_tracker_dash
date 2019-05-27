@@ -24,18 +24,41 @@ export default class Api {
     getRecentImages() {
         return this.get("/images/recent");
     }
-
-    getDetectionUrl(id) {
-        return this.withBase("/image/detections/" + id)
+    
+    getDetectionByScanId(id) {
+        return this.get("/detections/scan/" + id)
     }
 
-    get(endpoint) {
-        return fetch(this.withBase(endpoint))
+    getImageUrlByScanId(scanId) { 
+        return this.withBase("/image" + this.generateQueryString({"scan_id": scanId}));
+    }
+
+    getImageById(imageId) {
+        return this.get("/image", { "image_id": imageId })
+    }
+
+    getImageByScanId(scanId) {
+        return this.get("/image", { "scan_id": scanId })
+    }
+
+    get(endpoint, queryParams = {}) {
+        const url = this.withBase(endpoint + this.generateQueryString(queryParams));
+        console.log(url)
+        return fetch(url)
         .then(r => {
             console.log("Got repsonse")
             console.log(r)
             if (!r.ok) { throw r }
             return r.json()
         });
+    }
+
+    generateQueryString(queryParams) {
+        if (!queryParams) {
+            return "";
+        }
+        return "?" + Object.keys(queryParams)
+             .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(queryParams[k]))
+             .join('&');
     }
 }

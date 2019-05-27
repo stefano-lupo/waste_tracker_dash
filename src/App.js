@@ -9,7 +9,7 @@ import RecentImages from './components/RecentImages'
 import WasteOverTime from './components/charts/WasteOverTime'
 import WasteByIngredient from './components/charts/WasteByIngredient';
 import WasteByMenuItem from './components/charts/WasteByMenuItem';
-
+import WasteViewer from './components/WasteViewer';
 
 class App extends Component {
 
@@ -48,7 +48,8 @@ class App extends Component {
     return (
       <div className="App" class="container-fluid">
         <Header/>
-        <RecentImages/>      
+        <WasteViewer scanId={1}/>
+        {/* <RecentImages/>       */}
         {/* <WasteByMenuItem data={this.state.wasteByMenuItem} />
         <WasteByIngredient data={this.state.wasteByIngredient} />
         <WasteOverTime data={this.state.wasteOverTime} /> */}
