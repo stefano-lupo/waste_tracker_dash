@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080"
+const BASE_URL = "http://192.168.1.17:8080"
 
 export default class Api {
     constructor(baseUrl = BASE_URL) {
@@ -21,8 +21,8 @@ export default class Api {
         return this.get("/waste/ingredient");
     }
 
-    getRecentImages() {
-        return this.get("/images/recent");
+    getRecentScans() {
+        return this.get("/scans/recent");
     }
     
     getDetectionByScanId(scanId) {
@@ -46,8 +46,8 @@ export default class Api {
         console.log(url)
         return fetch(url)
         .then(r => {
-            console.log("Got repsonse")
-            console.log(r)
+            // console.log("Got repsonse")
+            // console.log(r)
             if (!r.ok) { throw r }
             return r.json()
         });

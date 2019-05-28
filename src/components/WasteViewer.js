@@ -10,9 +10,10 @@ const SEGMENT_WIDTH = 32;
 const SEGMENT_HEIGHT = 32;
 
 const COLOURS = new Map()
-COLOURS[3] = "#DA1C1C"
-COLOURS[5] = "#176D02"
-COLOURS[7] = "#E9E200"
+
+COLOURS[3] = "#176D02" // Green beans
+COLOURS[5] = "#E9E200" // Pasta
+COLOURS[7] = "#DA1C1C" // Tomato Red
 
 export default class ThreeScene extends Component {
 
@@ -22,7 +23,6 @@ export default class ThreeScene extends Component {
     }
 
     componentDidMount(){
-
         this.create3dView();
         this.addImage();
         this.start();
@@ -36,8 +36,6 @@ export default class ThreeScene extends Component {
                 this.addDetections()
             });
         this.scene.add( new THREE.AxesHelper(500));
-        this.addCube({x: 10, y:10, mass: 200}, COLOURS[3])
-        this.addCube({x: 100, y:100, mass: 400}, COLOURS[3])
     }
 
     create3dView() {
@@ -60,7 +58,7 @@ export default class ThreeScene extends Component {
 
     addCube(detection, color) {
         const { x, y, mass } = detection;
-        let z = mass / 5
+        let z = mass / 4000
         const geometry = new THREE.BoxGeometry(SEGMENT_WIDTH, SEGMENT_HEIGHT, z)
         const material = new THREE.MeshBasicMaterial({ transparent: true, color , opacity: 0.5})
         const cube = new THREE.Mesh(geometry, material);
@@ -130,7 +128,7 @@ export default class ThreeScene extends Component {
         
         return (
             <div
-                style={{ width: '640px', height: '480px' }}
+                style={{ width: WIDTH + 'px', height: HEIGHT +'px' }}
                 ref={(mount) => { this.mount = mount }}
             />
         );

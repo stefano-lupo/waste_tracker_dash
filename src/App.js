@@ -5,7 +5,8 @@ import Api from './api/Api'
 import objectToArray from './Util'
 
 import Header from './components/Header'
-import RecentImages from './components/RecentImages'
+import SummaryCards from './components/SummaryCards';
+import RecentScans from './components/RecentScans'
 import WasteOverTime from './components/charts/WasteOverTime'
 import WasteByIngredient from './components/charts/WasteByIngredient';
 import WasteByMenuItem from './components/charts/WasteByMenuItem';
@@ -24,55 +25,53 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // this.api.getWasteByMenuItem()
-    //   .then(json => {
-    //     const wasteByMenuItem = objectToArray(json);
-    //     this.setState({ wasteByMenuItem });
-    // });
+    this.api.getWasteByMenuItem()
+      .then(json => {
+        const wasteByMenuItem = objectToArray(json);
+        this.setState({ wasteByMenuItem });
+    });
     
-    // this.api.getWasteByIngredient()
-    //   .then(json => {
-    //     const wasteByIngredient = objectToArray(json);
-    //     this.setState({ wasteByIngredient });
-    // });
+    this.api.getWasteByIngredient()
+      .then(json => {
+        const wasteByIngredient = objectToArray(json);
+        this.setState({ wasteByIngredient });
+    });
         
-    // this.api.getWasteOverTime()
-    //   .then(json => {
-    //     const wasteOverTime = objectToArray(json)
-    //     this.setState({ wasteOverTime })
-    // });
-    this.api.getRecentImages().then(json => {
-      console.log(json.length)
-      const id = json[json.length - 1].id
-      this.setState({ id })
-    })
+    this.api.getWasteOverTime()
+      .then(json => {
+        const wasteOverTime = objectToArray(json)
+        this.setState({ wasteOverTime })
+    });
   }
 
   render() {
     // const { wasteByIngredient, wasteOverTime } = this.state;
-    const { id } = this.state;
-    if (!id) {
-      return null;
-    }
+    // const { id } = this.state;
+    // if (!id) {
+    //   return null;
+    // }
 
-    console.log("using id " + id)
+    // console.log("using id " + id)
     return (
-      <div className="App" class="container-fluid">
+      <div className="App" class="container-fluid px-0">
         <Header/>
-        <div class="row">
-          <div class="col-md-6">
-            <WasteViewer scanId={ id }/>
-          </div>
-          <div class="col-md-6">
-            <img class="img-fluid" src={"http://localhost:8080/detections/image?scan_id="+id}/>
-          </div>
+        <div class="container-fluid">
+          <SummaryCards />
+ 
+          <RecentScans />
+          {/* <div class="row">
+            <div class="col-md-6">
+              <WasteViewer scanId={ id }/>
+            </div>
+            <div class="col-md-6">
+              <img class="img-fluid" src={this.api.getImageUrlByScanId(id)}/>
+            </div>
+          </div> */}
+          
+          <WasteByMenuItem data={this.state.wasteByMenuItem} />
+          <WasteByIngredient data={this.state.wasteByIngredient} />
+          <WasteOverTime data={this.state.wasteOverTime} />
         </div>
-        
-        
-        {/* <RecentImages/>       */}
-        {/* <WasteByMenuItem data={this.state.wasteByMenuItem} />
-        <WasteByIngredient data={this.state.wasteByIngredient} />
-        <WasteOverTime data={this.state.wasteOverTime} /> */}
       </div>
     );
   }

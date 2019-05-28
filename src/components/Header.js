@@ -11,20 +11,27 @@ export default class Header extends React.Component {
 
     render() {
         return (
-            <div class="row">
-                <div class="col-sm-2">
-                    <img src={TcdLogo} class="img-fluid" />
+
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5">
+                <a class="navbar-brand" href="#">
+                    <img src={FloWasteLogo} width="50" height="50" class="d-inline-block align-top" alt="" />
+                </a>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                    </ul>
+                    <span class="navbar-text">Navbar text with an inline element</span>
                 </div>
-                {/* <div class="col-sm-3">
-                    <img src={FloWasteLogo} class="img-fluid"/>
-                </div> */}
-                <div class="col-sm-2">
-                    <img src={FoodCloudLogo} class="img-fluid" />
-                </div>
-                <div class="col-sm-2">
-                    <img src={UnimoreLogo} class="img-fluid"/>
-                </div>
-            </div>
+            </nav>
         )
     }
 }
