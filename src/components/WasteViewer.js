@@ -28,11 +28,16 @@ export default class ThreeScene extends Component {
         this.start();
         this.api.getDetectionByScanId(this.props.scanId)
             .then(detectionsByIngredient =>  {
+                console.log("Got detections by ingredient")
+                console.log(detectionsByIngredient)
                 this.setState({ 
                     detectionsByIngredient: new Map(Object.entries(detectionsByIngredient))
                 });
                 this.addDetections()
             });
+        this.scene.add( new THREE.AxesHelper(500));
+        this.addCube({x: 10, y:10, mass: 200}, COLOURS[3])
+        this.addCube({x: 100, y:100, mass: 400}, COLOURS[3])
     }
 
     create3dView() {
@@ -40,7 +45,7 @@ export default class ThreeScene extends Component {
         const height = this.mount.clientHeight
 
         this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1600)        
+        this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 5000)        
         this.controls = new OrbitControls(this.camera)
 
         this.camera.position.set(0, 0, 600)
@@ -51,18 +56,17 @@ export default class ThreeScene extends Component {
         this.renderer.setSize(width, height)
 
         this.mount.appendChild(this.renderer.domElement)
-   
-       
     }
 
     addCube(detection, color) {
         const { x, y, mass } = detection;
-
-        const geometry = new THREE.BoxGeometry(SEGMENT_WIDTH, SEGMENT_HEIGHT, mass/ 10000)
-        const material = new THREE.MeshBasicMaterial({ wireframe: true, color , opacity: 0.5})
+        let z = mass / 5
+        const geometry = new THREE.BoxGeometry(SEGMENT_WIDTH, SEGMENT_HEIGHT, z)
+        const material = new THREE.MeshBasicMaterial({ transparent: true, color , opacity: 0.5})
         const cube = new THREE.Mesh(geometry, material);
-        cube.position.x = x - WIDTH/2;
-        cube.position.y = y - HEIGHT / 2;
+        cube.position.x = x - WIDTH / 2
+        cube.position.y = (-y) + HEIGHT / 2
+        cube.position.z = cube.position.z + z / 2
         this.scene.add(cube);
     }
 

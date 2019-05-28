@@ -25,8 +25,8 @@ export default class Api {
         return this.get("/images/recent");
     }
     
-    getDetectionByScanId(id) {
-        return this.get("/detections/scan/" + id)
+    getDetectionByScanId(scanId) {
+        return this.get("/detections", {"scan_id": scanId})
     }
 
     getImageUrlByScanId(scanId) { 

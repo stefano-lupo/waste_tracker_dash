@@ -41,14 +41,34 @@ class App extends Component {
     //     const wasteOverTime = objectToArray(json)
     //     this.setState({ wasteOverTime })
     // });
+    this.api.getRecentImages().then(json => {
+      console.log(json.length)
+      const id = json[json.length - 1].id
+      this.setState({ id })
+    })
   }
 
   render() {
     // const { wasteByIngredient, wasteOverTime } = this.state;
+    const { id } = this.state;
+    if (!id) {
+      return null;
+    }
+
+    console.log("using id " + id)
     return (
       <div className="App" class="container-fluid">
         <Header/>
-        <WasteViewer scanId={1}/>
+        <div class="row">
+          <div class="col-md-6">
+            <WasteViewer scanId={ id }/>
+          </div>
+          <div class="col-md-6">
+            <img class="img-fluid" src={"http://localhost:8080/detections/image?scan_id="+id}/>
+          </div>
+        </div>
+        
+        
         {/* <RecentImages/>       */}
         {/* <WasteByMenuItem data={this.state.wasteByMenuItem} />
         <WasteByIngredient data={this.state.wasteByIngredient} />
