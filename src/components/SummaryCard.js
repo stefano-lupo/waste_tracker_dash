@@ -33,18 +33,18 @@ export default class ThreeScene extends Component {
         }
         
         return (
-        <div class="card">
-            <div class={"card-body " + alignmentClass}>
-                <div class="row align-items-center" >
-                    <div class="col-md-4">
-                        <i class={"fas fa-5x " + icon}></i>
+        <div className="card">
+            <div className={"card-body " + alignmentClass}>
+                <div className="row align-items-center" >
+                    <div className="col-md-4">
+                        <i className={"fas fa-5x " + icon}></i>
                     </div>
-                    <div class="col-md-4">
-                        <h3 class="card-title">{title}</h3>
-                        <h6 class="card-subtitle mb-2 text-muted">{subtitle}</h6>
+                    <div className="col-md-4">
+                        <h3 className="card-title">{title}</h3>
+                        <h6 className="card-subtitle mb-2 text-muted">{subtitle}</h6>
                     </div>
-                    <div class={"col-md-4 " + alignmentClass}>
-                        <h2 class={colourClass}>{deltaWithSign}%</h2>
+                    <div className={"col-md-4 " + alignmentClass}>
+                        <h2 className={colourClass}>{deltaWithSign}%</h2>
                     </div>
                 </div>
 

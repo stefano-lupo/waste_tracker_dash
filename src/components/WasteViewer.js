@@ -20,22 +20,42 @@ export default class ThreeScene extends Component {
     constructor(props) {
         super(props);
         this.api = new Api();
+        this.state = ({
+            detectionsByIngredient: null,
+        })
     }
 
     componentDidMount(){
         this.create3dView();
-        this.addImage();
         this.start();
-        this.api.getDetectionByScanId(this.props.scanId)
-            .then(detectionsByIngredient =>  {
-                console.log("Got detections by ingredient")
-                console.log(detectionsByIngredient)
-                this.setState({ 
-                    detectionsByIngredient: new Map(Object.entries(detectionsByIngredient))
-                });
-                this.addDetections()
+        this.renderForScanId(this.props.scanId)
+    }
+
+    componentWillUnmount(){
+        this.stop()
+        this.mount.removeChild(this.renderer.domElement)
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps == this.props) {
+            return;
+        }
+        
+        while(this.scene.children.length > 0){ 
+            this.scene.remove(this.scene.children[0]); 
+        }
+        this.renderForScanId(this.props.scanId)
+    }
+
+    renderForScanId(scanId) {
+        this.addImage();
+        this.api.getDetectionByScanId(scanId)
+        .then(detectionsByIngredient =>  {
+            this.setState({ 
+                detectionsByIngredient: new Map(Object.entries(detectionsByIngredient))
             });
-        this.scene.add( new THREE.AxesHelper(500));
+            this.addDetections()
+        });
     }
 
     create3dView() {
@@ -44,15 +64,15 @@ export default class ThreeScene extends Component {
 
         this.scene = new THREE.Scene()
         this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 5000)        
-        this.controls = new OrbitControls(this.camera)
-
         this.camera.position.set(0, 0, 600)
-        this.controls.update();
 
         this.renderer = new THREE.WebGLRenderer({ antialias: false })
         this.renderer.setClearColor('#0f0000')
         this.renderer.setSize(width, height)
-
+        
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+        this.controls.update();
+        this.scene.add( new THREE.AxesHelper(500));
         this.mount.appendChild(this.renderer.domElement)
     }
 
@@ -85,22 +105,11 @@ export default class ThreeScene extends Component {
         this.scene.add(light)
     }
 
-
-
     addDetections() {
         this.state.detectionsByIngredient.forEach((detectionsJson, ingredientId) => {
-            console.log("ingid" + ingredientId)
-            console.log(detectionsJson["scan_id"]);
-
-            const detections = JSON.parse(detectionsJson["detections"]);
-            const colour = COLOURS[ingredientId]
+            const { detections } = detectionsJson;
             detections.forEach(d => this.addCube(d, COLOURS[ingredientId]))
         })
-    }
-
-    componentWillUnmount(){
-        this.stop()
-        this.mount.removeChild(this.renderer.domElement)
     }
 
     start = () => {
@@ -114,8 +123,6 @@ export default class ThreeScene extends Component {
     }
 
     animate = () => {
-        // this.cube.rotation.x += 0.01
-        // this.cube.rotation.y += 0.01
         this.renderScene()
         this.frameId = window.requestAnimationFrame(this.animate)
     }
@@ -125,10 +132,10 @@ export default class ThreeScene extends Component {
     }
 
     render(){
-        
         return (
             <div
-                style={{ width: WIDTH + 'px', height: HEIGHT +'px' }}
+                style={{width: "100%", height: "560px"}}
+                // style={{ width: WIDTH + 'px', height: HEIGHT +'px' }}
                 ref={(mount) => { this.mount = mount }}
             />
         );

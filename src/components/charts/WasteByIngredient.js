@@ -10,7 +10,7 @@ const options = {
 
 const dataset = data => {
     let withHeaders = [["Ingredient", "Waste (KG)"]]
-    console.log(data)
+    // console.log(data)
     data.forEach(d => withHeaders.push(d));
     return withHeaders
 }

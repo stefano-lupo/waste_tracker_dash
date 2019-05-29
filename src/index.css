@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+.container-fluid-small {
+  max-width: 90%;
+}
+
 .border-me {
   border: solid black 1px;
 }

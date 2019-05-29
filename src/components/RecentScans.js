@@ -1,74 +1,88 @@
 import React from 'react';
-import Carousel from 'react-bootstrap/Carousel'
+import { Button } from 'react-bootstrap'
 
 import Api from '../api/Api'
+import WasteViewer from './WasteViewer';
+import WasteByIngredientScan from './charts/WasteByIngredientScan';
 
 export default class RecentScans extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.api = new Api()
-    this.handleSelect = this.handleSelect.bind(this);
 
     this.state = {
-      index: 0,
-      direction: null,
+      isLoading: true,
+      currentIndex: -1
     };
+  }
+
+  scanDetails(scan) {
+    console.log(scan);
+    const time = new Date(scan.scan.time);
+    const timeString = time.toLocaleTimeString() + ", " + time.toLocaleDateString()
+
+    return (
+      <div className="">
+        <p>Menu Item: {scan.menu_item_name}</p>
+        <p>Time: {timeString}</p>
+        <p>User ID: {scan.scan.user_id}</p>      
+      </div>
+    );
   }
 
   componentDidMount() {
     this.api.getRecentScans()
-      .then(recentScans => {
-        this.setState({ recentScans })
+      .then(recentScansObj => {
+        const recentScans = Object.values(recentScansObj).sort((a, b) => b.scan.id - a.scan.id)
+        //   Object.entries(recentScansObj).map(([k, v]) => [parseInt(k), v])
+        // );
+        
+        // console.log(recentScans.keys())
+        this.setState({ 
+          recentScans,
+          currentIndex: 0,
+          isLoading: false
+        })
       })
   }
 
-  handleSelect(selectedIndex, e) {
-    this.setState({
-      index: selectedIndex,
-      direction: e.direction,
-    });
-  }
 
   render() {
-    const { index, direction, recentScans } = this.state;
-    
+    const { recentScans, currentIndex } = this.state;
     if (!recentScans) {
-      return null
+      return null;
     }
 
-    return (
-     
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>Recent Scans</h1>
-        </div>
+    const nextDisabled = currentIndex >= recentScans.length - 1
+    const prevDisabled = currentIndex <= 0
 
-        <div class="col-md-4">
-          <Carousel
-              activeIndex={index}
-              direction={direction}
-              onSelect={this.handleSelect}>
-            {  
-            Object.keys(recentScans).map(k => {
-              const scanId = recentScans[k][0].scan.id;
-              const scanIdImageUrl = this.api.getImageUrlByScanId(scanId)
-              console.log(scanIdImageUrl)
-              return (
-                <Carousel.Item>
-                  <img src={scanIdImageUrl} className="d-block w-100"  alt="First slide"/>
-                </Carousel.Item>
-              );
-            })
-          }
-          </Carousel>
+    const scan = recentScans[currentIndex]
+    const scanId = scan.scan.id
+
+    return (
+      <div className="container-fluid container-fluid-small">
+        <h2>Recent Scans</h2>
+        <hr/>
+        <div className="row">
+          <div className="col-md-6">
+            <WasteViewer scanId={scanId} />
+            <div className="row mt-5">
+              <div className="col-md-6">
+                <Button block disabled={prevDisabled} onClick={prevDisabled ? null : () => this.setState({currentIndex: currentIndex - 1})}>Previous</Button>
+              </div>
+              <div className="col-md-6">
+                <Button block disabled={nextDisabled} onClick={nextDisabled ? null : () => this.setState({currentIndex: currentIndex + 1})}>Next</Button>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            {this.scanDetails(scan)}
+            <WasteByIngredientScan data={scan.waste_by_ingredient}/>
+          </div>
         </div>
-        <div class="col-md-4">
-          <p>User: Stefano Lupo</p>
-          <p>Time: 18:07, Today</p>
-          <p>Menu Item: Chicken Curry</p>
+        
         </div>
-      </div>
-    );
+    )
   }
 }
