@@ -37,7 +37,7 @@ export default class ThreeScene extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps == this.props) {
+        if (prevProps === this.props) {
             return;
         }
         
@@ -65,13 +65,16 @@ export default class ThreeScene extends Component {
         this.scene = new THREE.Scene()
         this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 5000)        
         this.camera.position.set(0, 0, 600)
+        this.camera.lookAt(new THREE.Vector3(0, 0, 0))
 
         this.renderer = new THREE.WebGLRenderer({ antialias: false })
-        this.renderer.setClearColor('#0f0000')
+        this.renderer.setClearColor('#ffffff')
         this.renderer.setSize(width, height)
         
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-        this.controls.update();
+        // this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+        // this.controls.autoUpdate = true;
+        // this.controls.enablePan = false;
+        // this.controls.update();
         this.scene.add( new THREE.AxesHelper(500));
         this.mount.appendChild(this.renderer.domElement)
     }
@@ -124,10 +127,17 @@ export default class ThreeScene extends Component {
 
     animate = () => {
         this.renderScene()
+       this.camera.rotation.x += 0.5
+       this.camera.rotation.y += 0.5
+    
+       this.camera.lookAt(0, 0, 0)
         this.frameId = window.requestAnimationFrame(this.animate)
+       
+        // this.controls.update();
     }
 
     renderScene = () => {
+        // this.controls.update()
         this.renderer.render(this.scene, this.camera)
     }
 

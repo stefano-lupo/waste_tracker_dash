@@ -12,7 +12,8 @@
     "react-scripts": "^2.1.8",
     "three": "^0.104.0",
     "three-orbit-controls": "^82.1.0",
-    "three-orbitcontrols": "^2.102.1"
+    "three-orbitcontrols": "^2.102.1",
+    "websocket": "^1.0.28"
   },
   "scripts": {
     "start": "react-scripts start",

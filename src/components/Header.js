@@ -1,11 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Image } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-
-
-import TcdLogo from '../assets/tcd.jpg'
-import UnimoreLogo from '../assets/unimore.jpg'
-import FoodCloudLogo from '../assets/foodcloud.png'
 import FloWasteLogo from '../assets/flowaste.png'
 
 export default class Header extends React.Component {
