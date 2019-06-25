@@ -17,7 +17,8 @@ const STATES = new Map(Object.entries({
   "LOWERING": "Lowering your tray",
   "LOWERING_ERROR": "Error in lowering your tray!",
   "LOWERING_FINISH": "Finished lowering your tray!", 
-  "IMAGE_START": "Analyzing food waste...",
+  "IMAGE_START": "Capturing image of food..",
+  "IMAGE_ANALYZING": "Analyzing food waste...",
   "IMAGE_FINISHED": "Finished analyzing"
 }))
 
@@ -59,16 +60,17 @@ export default class TraySystemScreen extends Component {
    
   }
 
+
   render() {
    
     const { state, stateDescription, data } = this.state;
+    const have3dModel = state === "IMAGE_FINISHED";
     return (
-      <Container fluid className="mt-3">
+      <Container fluid className="tray-system-screen">
         <StaticHeader />
-        <StatisticCycler />
+        <StatisticCycler showStats={!have3dModel}/>
         <StateDescriber stateDescription={stateDescription} />
-        {/* { state === "IMAGE_FINISHED" ? <Image src={this.api.getImageUrlByScanId(data)} /> : null} */}
-        { state === "IMAGE_FINISHED" ? <WasteViewer scanId={data} /> : null}
+        {have3dModel ? <WasteViewer scanId={data} orbitControls={false} /> : null}
       </Container>
     );
   }

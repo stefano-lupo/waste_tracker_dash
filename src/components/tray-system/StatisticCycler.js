@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Image } from 'react-bootstrap'
 
+import SloganGif from '../../assets/gifs/slogan.gif'
+import FoodWasteReductionGif from '../../assets/gifs/food_waste_reduction.gif'
+import LoopingGif from '../../assets/gifs/loop.gif'
+
+
 const STATISTICS = [
     {
         "main": "Frogs",
@@ -20,7 +25,12 @@ const STATISTICS = [
     },
 ]
 
-const CYCLE_TIME_MS = 2000;
+const GIFS = [
+    SloganGif,
+    FoodWasteReductionGif
+]
+
+const CYCLE_TIME_MS = 5000;
 
 
 export default class App extends Component {
@@ -28,16 +38,18 @@ export default class App extends Component {
     constructor(props) {
       super(props);
       this.state = {
-          statisticIndex: 0
+          statisticIndex: 0,
+          gifIndex: 0,
       }
       this.cycle()    
     }
     
     cycle() {
         setTimeout(() => {
-            let { statisticIndex } = this.state;
+            let { statisticIndex, gifIndex } = this.state;
             statisticIndex = (++statisticIndex) % STATISTICS.length;
-            this.setState({statisticIndex})
+            gifIndex = (++gifIndex) % GIFS.length;
+            this.setState({statisticIndex, gifIndex})
             this.cycle()
         }
         , CYCLE_TIME_MS)
@@ -48,12 +60,21 @@ export default class App extends Component {
     }
   
     render() {
-        const statistic = STATISTICS[this.state.statisticIndex]
+        const { statisticIndex, gifIndex } = this.state;
+        const statistic = STATISTICS[statisticIndex]
+        const gif = GIFS[gifIndex]
+        console.log(gif)
+
+        if (!this.props.showStats) {
+            return null
+        }
+        
         return (
            <Row className="justify-content-center mt-5">
-               <Col md={8} className="text-center">
-                    <h3>{statistic.main}</h3>
-                    <p>{statistic.detail}</p>
+               <Col className="text-center">
+                    <Image className="center-block"  height="450px" src={LoopingGif} />
+                    {/* <h3>{statistic.main}</h3>
+                    <p>{statistic.detail}</p> */}
                 </Col>
            </Row>
         );

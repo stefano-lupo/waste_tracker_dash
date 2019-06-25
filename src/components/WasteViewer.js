@@ -4,16 +4,30 @@ import * as OrbitControls from 'three-orbitcontrols'
 
 import Api from '../api/Api';
 
-const WIDTH = 640
-const HEIGHT = 480
-const SEGMENT_WIDTH = 32;
-const SEGMENT_HEIGHT = 32;
+// const WIDTH = 1280
+// const HEIGHT = 720  
 
-const COLOURS = new Map()
+const scaleFactor = 1
 
-COLOURS[3] = "#176D02" // Green beans
-COLOURS[5] = "#E9E200" // Pasta
-COLOURS[7] = "#DA1C1C" // Tomato Red
+const WIDTH = 1280 / scaleFactor
+const HEIGHT = 720 / scaleFactor
+// const WIDTH = 1024 / scaleFactor
+// const HEIGHT = 512  / scaleFactor
+
+const SEGMENT_WIDTH = 50 / scaleFactor;
+const SEGMENT_HEIGHT = 50 / scaleFactor;
+
+const COLOURS = [
+    "#42f450", // Broccoli
+    "#ffb7f9", // Chicken
+    "#2d2d2d", // Cutlery
+    "#ffffff", // Empty
+    "#176D02", // Green beans
+    "#abfcb2", // Lettuce
+    "#E9E200", // Pasta
+    "#d9ddd9", // Rice
+    "#DA1C1C", // Tomato
+]
 
 export default class ThreeScene extends Component {
 
@@ -63,28 +77,39 @@ export default class ThreeScene extends Component {
         const height = this.mount.clientHeight
 
         this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 5000)        
-        this.camera.position.set(0, 0, 600)
+        this.camera = new THREE.PerspectiveCamera(70, width / height, 1, 1000)        
+        this.camera.position.set(0, -500, 600)
         this.camera.lookAt(new THREE.Vector3(0, 0, 0))
+        this.camera.rotateZ()
 
         this.renderer = new THREE.WebGLRenderer({ antialias: false })
         this.renderer.setClearColor('#ffffff')
         this.renderer.setSize(width, height)
         
-        // this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-        // this.controls.autoUpdate = true;
-        // this.controls.enablePan = false;
-        // this.controls.update();
+        if (this.props.orbitControls) {
+            this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+            // this.controls.autoUpdate = true;
+            // this.controls.enablePan = false;
+            this.controls.update();
+        }
+      
         this.scene.add( new THREE.AxesHelper(500));
         this.mount.appendChild(this.renderer.domElement)
     }
 
     addCube(detection, color) {
+        // console.log("Adding cube for color: " + color)
         const { x, y, mass } = detection;
-        let z = mass / 4000
+        // TODO Normalize!
+        let z = mass  * 50
+        // let z = 10
         const geometry = new THREE.BoxGeometry(SEGMENT_WIDTH, SEGMENT_HEIGHT, z)
         const material = new THREE.MeshBasicMaterial({ transparent: true, color , opacity: 0.5})
         const cube = new THREE.Mesh(geometry, material);
+        // cube.position.x = x 
+        // cube.position.y = y
+        // cube.position.z = cube.position.z + z / 2
+
         cube.position.x = x - WIDTH / 2
         cube.position.y = (-y) + HEIGHT / 2
         cube.position.z = cube.position.z + z / 2
@@ -97,7 +122,7 @@ export default class ThreeScene extends Component {
             map: textureLoader.load(this.api.getImageUrlByScanId(this.props.scanId))
         });
         
-        const geometry = new THREE.PlaneGeometry(640, 480);
+        const geometry = new THREE.PlaneGeometry(WIDTH, HEIGHT  );
 
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.set(0,0,0)
@@ -111,7 +136,11 @@ export default class ThreeScene extends Component {
     addDetections() {
         this.state.detectionsByIngredient.forEach((detectionsJson, ingredientId) => {
             const { detections } = detectionsJson;
-            detections.forEach(d => this.addCube(d, COLOURS[ingredientId]))
+            detections.forEach(d => {
+                console.log("Adding cube for detection of")
+                console.log(d)
+                this.addCube(d, COLOURS[ingredientId - 1])
+            })
         })
     }
 
@@ -142,6 +171,7 @@ export default class ThreeScene extends Component {
     }
 
     render(){
+        console.log("Rendering waste viewier")
         return (
             <div
                 style={{width: "100%", height: "560px"}}

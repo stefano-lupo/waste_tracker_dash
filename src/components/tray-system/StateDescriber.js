@@ -17,10 +17,12 @@ export default class StateDescriber extends Component {
    
     const { stateDescription, scanId } = this.props;
     return (
-      <Container fluid className="mt-3">
-        <h3 className="text-center">{stateDescription}</h3>
-        {scanId ? <WasteViewer scanId={scanId} /> : null }
-      </Container>
+      <Row className="state-describer-row" >
+        <Col>
+          <h1 className="state-describer-text">{stateDescription}</h1>
+          {scanId ? <WasteViewer scanId={scanId} /> : null }
+        </Col>
+      </Row>
     );
   }
 }

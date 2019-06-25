@@ -68,9 +68,9 @@ export default class ManagerDashboard extends Component {
             </div>
           </div> */}
           
-          <WasteByMenuItem data={this.state.wasteByMenuItem} />
+          {/* <WasteByMenuItem data={this.state.wasteByMenuItem} />
           <WasteByIngredient data={this.state.wasteByIngredient} />
-          <WasteOverTime data={this.state.wasteOverTime} />
+          <WasteOverTime data={this.state.wasteOverTime} /> */}
         </div>
       </div>
     );

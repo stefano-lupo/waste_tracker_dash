@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Api from '../api/Api';
 
 
@@ -37,6 +37,7 @@ export default class ThreeScene extends Component {
             <div className={"card-body " + alignmentClass}>
                 <div className="row align-items-center" >
                     <div className="col-md-4">
+                        <FontAwesomeIcon icon={icon} size="4x"/>
                         <i className={"fas fa-5x " + icon}></i>
                     </div>
                     <div className="col-md-4">

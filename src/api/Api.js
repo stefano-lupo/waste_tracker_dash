@@ -1,11 +1,66 @@
-const BASE_URL = "http://localhost:8080"
+const BASE = "http://localhost"
+// const BASE = "http://0.0.0.0"
+// const BASE = "http://10.42.0.1"
+// const BASE = "http://192.168.1.155"
+// const BASE = "http://172.20.10.2"
+const BASE_URL = BASE + ":8080"
+// const LORENZO_URL = BASE + "8090"
+// const LORENZO_URL = "http://192.168.86.233"
+const LORENZO_URL = "https://magna-tron.appspot.com/api/v0.1/participants"
+// const LORENZO_URL = "https://temp.requestcatcher.com/test"
 
 export default class Api {
     constructor(baseUrl = BASE_URL) {
         this.baseUrl = baseUrl;
     }
+    
+    getUserScores() {
+        return fetch(LORENZO_URL)
+        .then(r => {
+            // console.log("Got repsonse")
+            // console.log(r)
+            if (!r.ok) { throw r }
+            return r.json()
+        });
+    }
 
-    withBase(endpoint) {
+    postUserScore(id, score){
+        const url = LORENZO_URL + "/" + id
+        // var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        // const fullUrl = proxyUrl + url;
+        // fetch(proxyUrl + url)
+        // .then(blob => blob.json())
+        // .then(data => {
+        //     console.table(data);
+        //     document.querySelector("pre").innerHTML = JSON.stringify(data, null, 2);
+        //     return data;
+        // })
+        // .catch(e => {
+        //     console.log(e);
+        //     return e;
+        // });
+        console.log(url)
+        fetch(url, {
+            method: 'post',
+            headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ score })
+        })
+        .then(res => {
+            if (!res.ok) {
+                console.log("Lorenzo API call failed")
+                return
+            }
+
+            console.log("Lorenzo API call succeeded")  
+            return res.json()
+        })
+        .then(json => console.log(json))
+    }
+
+    withBase(endpoint=BASE_URL) {
         return BASE_URL + endpoint
     }
 

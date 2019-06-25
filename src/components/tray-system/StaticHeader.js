@@ -18,17 +18,19 @@ export default class App extends Component {
   
     render() {
         return (
+            <Container fluid className="tray-screen-container">
             <Row mt={3}>
                 <Col xs={4}>
                     <Image className="float-left" height="100px" src={TcdLogo} />
                 </Col>
                 <Col xs={4}>
-                    <Image height="200px" className="mx-auto d-block" src={FloWasteLogo} />
+                    <Image height="120px" className="mx-auto d-block" src={FloWasteLogo} />
                 </Col>
                 <Col xs={4}>
                     <Image className="float-right" height="100px" src={UnimoreLogo} />
                 </Col>
             </Row>
+            </Container>
         );
     }
   }

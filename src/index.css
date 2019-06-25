@@ -24,3 +24,35 @@ code {
 p, h4, h3, h2, h1 {
   font-family: 'Roboto', sans-serif;
 }
+
+.user-row {
+  border-bottom: solid rgba(0, 0, 0, 0.3) 1px;
+  margin-bottom: 5px;
+  padding: 20px 0px;
+}
+
+.state-describer-row {
+  margin-top: 60px;
+}
+
+.state-describer-text {
+  text-align: center;
+  color: rgba(0,0,0,0.8);
+  
+}
+
+.tray-system-screen {
+  /* padding:300px */
+  padding-top: 100px;
+  /* margin-left: 500px;
+  margin-right: 200px; */
+}
+
+.tray-screen-container {
+  max-width: 90%;
+}
+
+.recentButtons {
+  background-color: #00c1d5; 
+  color: white;
+}
